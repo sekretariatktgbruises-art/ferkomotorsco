@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ceník | Ferkomotors Co.</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --purple:#4b1d78;
+      --yellow:#FDB927;
+      --black:#0B0B0B;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:'Poppins',sans-serif;
+      color:#222;
+      background:#fff url('kolo.jpg') no-repeat center center fixed;
+      background-size:cover;
+      position:relative;
+      overflow-x:hidden;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background:rgba(255,255,255,0.85);
+      z-index:0;
+    }
+
+    .topbar{
+      background:var(--yellow);
+      color:var(--black);
+      font-size:15px;
+      padding:10px 80px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      box-shadow:0 2px 6px rgba(0,0,0,.15);
+      position:relative;
+      z-index:10;
+    }
+    .topbar a{color:var(--black);font-weight:600;margin-left:14px;display:inline-flex;align-items:center;gap:6px;}
+
+    header{
+      background:var(--purple);
+      padding:20px 80px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      color:#fff;
+      box-shadow:0 2px 10px rgba(0,0,0,.2);
+      position:relative;
+      z-index:10;
+    }
+    header img{height:60px;cursor:pointer;}
+    nav{display:flex;align-items:center;gap:20px;}
+    nav a{
+      font-weight:600;font-size:18px;color:#fff;padding:10px 18px;border-radius:8px;transition:.3s;
+    }
+    nav a:hover{background:rgba(255,255,255,0.15);}
+    nav a.active{background:var(--yellow);color:var(--black);}
+
+    main{
+      position:relative;
+      z-index:5;
+      background:#fff;
+      max-width:1100px;
+      margin:80px auto 100px;
+      padding:80px;
+      border-radius:20px;
+      box-shadow:0 0 40px rgba(0,0,0,0.15);
+    }
+
+    h1{
+      font-size:48px;
+      color:var(--purple);
+      margin-bottom:10px;
+      text-align:center;
+    }
+    p.subtext{
+      color:#555;
+      font-size:18px;
+      text-align:center;
+      max-width:700px;
+      margin:auto;
+      margin-bottom:50px;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-bottom:40px;
+    }
+    th, td{
+      padding:14px 18px;
+      text-align:left;
+      border-bottom:1px solid #ddd;
+      font-size:16px;
+    }
+    th{
+      background:var(--purple);
+      color:#fff;
+    }
+    tr:hover{
+      background:rgba(75,29,120,0.08);
+    }
+
+    .note{
+      text-align:center;
+      font-style:italic;
+      color:#555;
+    }
+
+    footer{
+      background:#111;
+      color:#aaa;
+      text-align:center;
+      padding:25px;
+      font-size:14px;
+      margin-top:40px;
+      position:relative;
+      z-index:10;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div><i class="fa-regular fa-clock"></i> Otevřeno Po–Pá 8:00–16:00</div>
+    <div>
+      <a href="mailto:ferkomotorsco@seznam.cz"><i class="fa-regular fa-envelope"></i> ferkomotorsco@seznam.cz</a>
+      <a href="tel:+420601366941"><i class="fa-solid fa-phone"></i> +420 601 366 941</a>
+    </div>
+  </div>
+
+  <header>
+    <a href="index.html"><img src="logo.png" alt="Ferkomotors Co."></a>
+    <nav>
+      <a href="index.html">Úvod</a>
+      <a href="sluzby.html">Služby</a>
+      <a class="active" href="cenik.html">Ceník</a>
+      <a href="kontakt.html">Kontakt</a>
+      <a href="objednat.html">Objednat se</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Ceník služeb</h1>
+    <p class="subtext">Ceny jsou orientační a mohou se lišit podle typu vozu a rozsahu práce.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Služba</th>
+          <th>Cena (od)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Diagnostika motoru</td><td>500 Kč</td></tr>
+        <tr><td>Výměna oleje + filtrů</td><td>900 Kč</td></tr>
+        <tr><td>Servis klimatizace</td><td>800 Kč</td></tr>
+        <tr><td>Výměna brzdových destiček</td><td>700 Kč / náprava</td></tr>
+        <tr><td>Výměna tlumičů</td><td>1 200 Kč / náprava</td></tr>
+        <tr><td>Pneuservis – přezutí osobní vozy</td><td>700 Kč / sada</td></tr>
+        <tr><td>Karosářské práce</td><td>individuálně</td></tr>
+      </tbody>
+    </table>
+
+    <p class="note">Všechny ceny jsou uvedeny včetně DPH. <br> Přesnou kalkulaci vám sdělíme po prohlídce vozidla.</p>
+  </main>
+
+  <footer>
+    © 2025 Ferkomotors Co. – Vítkov, Pivovarská 493/493
+  </footer>
+</body>
+</html>

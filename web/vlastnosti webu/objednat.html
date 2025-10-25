@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Objednat se | Ferkomotors Co.</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root { --purple:#4b1d78; --yellow:#FDB927; --black:#0B0B0B; }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:'Poppins',sans-serif; color:#222;
+      background:#fff url('kolo.jpg') no-repeat center center fixed;
+      background-size:cover; position:relative; overflow-x:hidden;
+    }
+    body::before{content:""; position:fixed; inset:0; background:rgba(255,255,255,.8); z-index:0;}
+
+    .topbar{
+      background:var(--yellow); color:var(--black); font-size:15px; padding:10px 80px;
+      display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;
+      box-shadow:0 2px 6px rgba(0,0,0,.15); position:relative; z-index:10;
+    }
+    .topbar a{color:var(--black); font-weight:600; margin-left:14px; display:inline-flex; align-items:center; gap:6px;}
+
+    header{
+      background:var(--purple); padding:20px 80px; display:flex; align-items:center; justify-content:space-between;
+      color:#fff; box-shadow:0 2px 10px rgba(0,0,0,.2); position:relative; z-index:10;
+    }
+    header img{height:60px; cursor:pointer;}
+    nav{display:flex; align-items:center; gap:20px;}
+    nav a{font-weight:600; font-size:18px; color:#fff; padding:10px 18px; border-radius:8px; transition:.3s;}
+    nav a:hover{background:rgba(255,255,255,.15);} 
+    nav a.active{background:var(--yellow); color:var(--black);}
+
+    main{
+      position:relative; z-index:5; background:#fff; max-width:1100px; margin:80px auto 100px;
+      padding:80px; border-radius:20px; box-shadow:0 0 40px rgba(0,0,0,.15);
+    }
+    h1{font-size:48px; color:var(--purple); margin-bottom:10px; text-align:center;}
+    p.subtext{color:#555; font-size:18px; text-align:center; max-width:700px; margin:0 auto 50px;}
+
+    .brand-line{
+      display:flex; align-items:center; gap:16px; justify-content:center; margin-bottom:20px; min-height:62px;
+    }
+    .brand-logo{
+      width:56px; height:56px; border-radius:50%; background:#f5f5f5; display:flex; align-items:center; justify-content:center;
+      box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);
+      overflow:hidden;
+    }
+    .brand-logo img{width:100%; height:100%; object-fit:contain; display:none;}
+    .brand-fallback{font-weight:800; color:#666; font-size:14px; letter-spacing:1px; display:none;}
+
+    form{
+      display:grid; grid-template-columns:1fr 1fr; gap:20px; max-width:880px; margin:20px auto 0;
+    }
+    form input, form select, form textarea{
+      padding:14px 18px; font-size:16px; border:1px solid #ccc; border-radius:10px; transition:.3s; font-family:'Poppins',sans-serif; width:100%;
+    }
+    form input:focus, form select:focus, form textarea:focus{border-color:var(--purple); outline:none; box-shadow:0 0 8px rgba(75,29,120,.2);}
+    form textarea{grid-column:span 2; resize:vertical;}
+    .row-span-2{grid-column:span 2;}
+    .muted{color:#777; font-size:14px;}
+
+    .inline{
+      display:flex; gap:12px; align-items:center; color:#444; font-size:14px;
+    }
+    .loading{font-size:14px; color:#666; display:none;}
+    .error{font-size:14px; color:#b00020; display:none;}
+
+    button{
+      grid-column:span 2; background:var(--purple); color:#fff; border:none; padding:14px 20px; font-size:16px;
+      border-radius:10px; cursor:pointer; transition:.3s; font-weight:600;
+    }
+    button:hover{background:var(--yellow); color:var(--black);}
+
+    footer{background:#111; color:#aaa; text-align:center; padding:25px; font-size:14px; margin-top:40px; position:relative; z-index:10;}
+
+    @media(max-width:768px){
+      form{grid-template-columns:1fr;}
+      form textarea, button{grid-column:1;}
+      .brand-line{justify-content:flex-start;}
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div><i class="fa-regular fa-clock"></i> Otevřeno Po–Pá 8:00–16:00</div>
+    <div>
+      <a href="mailto:ferkomotorsco@seznam.cz"><i class="fa-regular fa-envelope"></i> ferkomotorsco@seznam.cz</a>
+      <a href="tel:+420601366941"><i class="fa-solid fa-phone"></i> +420 601 366 941</a>
+    </div>
+  </div>
+
+  <header>
+    <a href="index.html"><img src="logo.png" alt="Ferkomotors Co."></a>
+    <nav>
+      <a href="index.html">Úvod</a>
+      <a href="sluzby.html">Služby</a>
+      <a href="cenik.html">Ceník</a>
+      <a href="kontakt.html">Kontakt</a>
+      <a class="active" href="objednat.html">Objednat se</a>
+    </nav>
+
+  </header>
+
+  <main>
+    <h1>Objednat se do servisu</h1>
+    <p class="subtext">Vyplňte prosím formulář níže. Značky, modely i motorizace se načítají z automobilové databáze.</p>
+
+    <!-- Značka + logo náhled -->
+    <div class="brand-line">
+      <div class="brand-logo">
+        <img id="brandLogo" alt="Značka">
+        <span id="brandFallback" class="brand-fallback">AUTO</span>
+      </div>
+      <div class="inline">
+        <span class="loading" id="loadingMakes"><i class="fa-solid fa-spinner fa-spin"></i> Načítám značky…</span>
+        <span class="error" id="errorMakes"><i class="fa-solid fa-circle-exclamation"></i> Nepodařilo se načíst značky.</span>
+      </div>
+    </div>
+
+    <form id="formOrder">
+      <input type="text" placeholder="Jméno a příjmení" required>
+      <input type="tel" placeholder="Telefon" required>
+      <input type="email" placeholder="E-mail" required>
+      <input type="text" placeholder="SPZ (nepovinné)">
+
+      <select id="selMake" required>
+        <option value="">Vyberte značku</option>
+      </select>
+
+      <select id="selYear" required>
+        <option value="">Rok výroby</option>
+      </select>
+
+      <select id="selModel" required disabled>
+        <option value="">Nejprve zvolte značku/rok</option>
+      </select>
+
+      <select id="selEngine" required disabled class="row-span-2">
+        <option value="">Nejprve zvolte značku a model</option>
+      </select>
+
+      <select required>
+        <option value="">Vyberte službu</option>
+        <option>Diagnostika a opravy</option>
+        <option>Výměna oleje a filtrů</option>
+        <option>Servis klimatizace</option>
+        <option>Pneuservis</option>
+        <option>Brzdy a podvozek</option>
+        <option>Karosářské práce</option>
+      </select>
+
+      <input type="date" required>
+      <input type="time" required>
+
+      <textarea rows="4" placeholder="Poznámka (nepovinné)"></textarea>
+
+      <div class="muted row-span-2" id="statusLine">
+        <span class="loading" id="loadingModels" style="display:none;"><i class="fa-solid fa-spinner fa-spin"></i> Načítám modely…</span>
+        <span class="loading" id="loadingTrims" style="display:none;"><i class="fa-solid fa-spinner fa-spin"></i> Načítám motorizace…</span>
+        <span class="error" id="errorModels" style="display:none;"><i class="fa-solid fa-circle-exclamation"></i> Modely se nepodařilo načíst.</span>
+        <span class="error" id="errorTrims" style="display:none;"><i class="fa-solid fa-circle-exclamation"></i> Motorizace se nepodařilo načíst.</span>
+      </div>
+
+      <button type="submit">Odeslat objednávku</button>
+    </form>
+  </main>
+
+  <footer>© 2025 Ferkomotors Co. – Vítkov, Pivovarská 493/493</footer>
+
+  <script>
+    // --- Pomocná utilita: JSONP (CarQuery používá JSONP kvůli CORS) ---
+    function jsonp(url){
+      return new Promise((resolve,reject)=>{
+        const cb = 'cb_'+Math.random().toString(36).slice(2);
+        const script = document.createElement('script');
+        window[cb] = (data)=>{ resolve(data); cleanup(); };
+        function cleanup(){ try{ delete window[cb]; }catch(e){} script.remove(); }
+        script.onerror = ()=>{ cleanup(); reject(new Error('JSONP error')); };
+        script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + cb;
+        document.body.appendChild(script);
+      });
+    }
+
+    // --- UI prvky ---
+    const selMake  = document.getElementById('selMake');
+    const selModel = document.getElementById('selModel');
+    const selYear  = document.getElementById('selYear');
+    const selEng   = document.getElementById('selEngine');
+
+    const loadingMakes  = document.getElementById('loadingMakes');
+    const errorMakes    = document.getElementById('errorMakes');
+    const loadingModels = document.getElementById('loadingModels');
+    const loadingTrims  = document.getElementById('loadingTrims');
+    const errorModels   = document.getElementById('errorModels');
+    const errorTrims    = document.getElementById('errorTrims');
+
+    const brandImg   = document.getElementById('brandLogo');
+    const brandFB    = document.getElementById('brandFallback');
+
+    // --- Naplnění roků (1990 → aktuální) ---
+    (function fillYears(){
+      const now = new Date().getFullYear();
+      for(let y = now; y >= 1990; y--){
+        const opt = document.createElement('option');
+        opt.value = y; opt.textContent = y;
+        selYear.appendChild(opt);
+      }
+    })();
+
+    // --- Načtení značek ---
+    async function loadMakes(){
+      loadingMakes.style.display = 'inline-flex';
+      errorMakes.style.display = 'none';
+      try{
+        const res = await jsonp('https://www.carqueryapi.com/api/0.3/?cmd=getMakes');
+        const makes = (res && (res.Makes || res.makes)) || [];
+        // Seradit podle make_display
+        makes.sort((a,b)=> (a.make_display||a.make).localeCompare(b.make_display||b.make,'cs',{sensitivity:'base'}));
+        for(const m of makes){
+          const name = m.make_display || m.make || m.make_name || '';
+          const id = (m.make_id || name || '').toString();
+          if(!name) continue;
+          const opt = document.createElement('option');
+          opt.value = id; opt.textContent = name;
+          opt.dataset.display = name;
+          selMake.appendChild(opt);
+        }
+      }catch(e){
+        errorMakes.style.display = 'inline-flex';
+      }finally{
+        loadingMakes.style.display = 'none';
+      }
+    }
+
+    // --- Logo značky: pokus o načtení z /logos/ ---
+    function updateBrandLogo(){
+      const makeId = (selMake.value||'').toLowerCase().replace(/\s+/g,'').replace(/[^a-z0-9-]/g,'');
+      const display = selMake.selectedOptions[0]?.dataset?.display || '';
+      if(!makeId){ brandImg.style.display='none'; brandFB.style.display='none'; return; }
+
+      const trials = [
+        `logos/${makeId}.svg`,
+        `logos/${makeId}.png`,
+        `logos/${makeId}.jpg`,
+        // fallback i pro make_display bez diakritiky/mezery
+        `logos/${(display||'').toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'').replace(/\s+/g,'')}.svg`
+      ];
+      let idx = 0;
+
+      function tryNext(){
+        if(idx >= trials.length){
+          brandImg.style.display='none';
+          brandFB.textContent = (display||makeId).slice(0,4).toUpperCase();
+          brandFB.style.display='block';
+          return;
+        }
+        const url = trials[idx++];
+        brandImg.onload = ()=>{ brandFB.style.display='none'; brandImg.style.display='block'; };
+        brandImg.onerror = tryNext;
+        brandImg.src = url;
+      }
+      tryNext();
+    }
+
+    // --- Načtení modelů pro značku (+ volitelně rok) ---
+    async function loadModels(){
+      selModel.innerHTML = '<option value="">Vyberte model</option>';
+      selModel.disabled = true;
+      selEng.innerHTML = '<option value="">Nejprve zvolte značku a model</option>';
+      selEng.disabled = true;
+      errorModels.style.display = 'none';
+
+      const makeId = selMake.value;
+      if(!makeId){ return; }
+      loadingModels.style.display = 'inline-flex';
+      try{
+        let url = `https://www.carqueryapi.com/api/0.3/?cmd=getModels&make=${encodeURIComponent(makeId)}`;
+        if(selYear.value) url += `&year=${encodeURIComponent(selYear.value)}`;
+        const res = await jsonp(url);
+        const models = (res && (res.Models || res.models)) || [];
+        // Unikátní názvy (někdy se vrací duplicity pro různé trhy)
+        const seen = new Set();
+        models.forEach(m=>{
+          const name = m.model_name || m.model || '';
+          if(!name || seen.has(name)) return;
+          seen.add(name);
+          const opt = document.createElement('option');
+          opt.value = name; opt.textContent = name;
+          selModel.appendChild(opt);
+        });
+        selModel.disabled = selModel.options.length <= 1;
+      }catch(e){
+        errorModels.style.display = 'inline-flex';
+      }finally{
+        loadingModels.style.display = 'none';
+      }
+    }
+
+    // --- Načtení motorizací (trims) pro značku+model+rok ---
+    async function loadTrims(){
+      selEng.innerHTML = '<option value="">Vyberte motorizaci</option>';
+      selEng.disabled = true;
+      errorTrims.style.display = 'none';
+      const makeId = selMake.value;
+      const model  = selModel.value;
+      const year   = selYear.value;
+
+      if(!makeId || !model || !year){ return; }
+
+      loadingTrims.style.display = 'inline-flex';
+      try{
+        const url = `https://www.carqueryapi.com/api/0.3/?cmd=getTrims&make=${encodeURIComponent(makeId)}&model=${encodeURIComponent(model)}&year=${encodeURIComponent(year)}`;
+        const res = await jsonp(url);
+        const trims = (res && (res.Trims || res.trims)) || [];
+
+        // Poskládat hezký label: např. 110 kW • 2.0 TDI • Diesel • Manuál
+        const unique = new Set();
+        trims.forEach(t=>{
+          const kw = t.model_engine_power_kw || t.model_engine_power || t.model_engine_power_ps || '';
+          const fuel = t.model_engine_fuel || t.model_engine_fuel_type || '';
+          const cap = t.model_engine_cc ? (t.model_engine_cc/1000).toFixed(1)+'L' : (t.model_engine_l ? t.model_engine_l+'L' : '');
+          const asp = t.model_engine_type || ''; // např. TDI, TFSI
+          const trans = t.model_transmission_type || t.model_transmission || '';
+          const labelParts = [];
+          if(kw) labelParts.push(`${kw} kW`);
+          if(cap || asp) labelParts.push([cap, asp].filter(Boolean).join(' '));
+          if(fuel) labelParts.push(fuel);
+          if(trans) labelParts.push(trans);
+          const label = labelParts.join(' • ') || 'Neznámá specifikace';
+
+          const key = `${kw}|${fuel}|${cap}|${asp}|${trans}`;
+          if(unique.has(key)) return;
+          unique.add(key);
+
+          const opt = document.createElement('option');
+          opt.value = key;
+          opt.textContent = label;
+          selEng.appendChild(opt);
+        });
+
+        selEng.disabled = selEng.options.length <= 1;
+        if(selEng.disabled){
+          const opt = document.createElement('option');
+          opt.value = ''; opt.textContent = 'Pro tuto kombinaci nebyly nalezeny motorizace';
+          selEng.appendChild(opt);
+        }
+      }catch(e){
+        errorTrims.style.display = 'inline-flex';
+      }finally{
+        loadingTrims.style.display = 'none';
+      }
+    }
+
+    // --- Události ---
+    selMake.addEventListener('change', ()=>{ updateBrandLogo(); loadModels(); selEng.innerHTML='<option value="">Nejprve zvolte značku a model</option>'; selEng.disabled=true; });
+    selYear.addEventListener('change', ()=>{ loadModels(); selEng.innerHTML='<option value="">Nejprve zvolte značku a model</option>'; selEng.disabled=true; });
+    selModel.addEventListener('change', loadTrims);
+
+    // Init
+    loadMakes();
+
+    // Odeslání formuláře – zatím jen prevence reloadu a jednoduchá kontrola
+    document.getElementById('formOrder').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      alert('Díky! Objednávka byla připravena k odeslání.\n(Technické odeslání na e-mail můžeme přidat na přání – PHP/Formspree/Webhook.)');
+    });
+  </script>
+</body>
+</html>
